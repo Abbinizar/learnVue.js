@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Shooping list App</title>
+</head>
+<body>
+	<script src="https://unpkg.com/vue"></script>
+	<div id="shopping-list">
+		<h1>{{header.toLocaleUpperCase()}}</h1>
+		<input type="text" v-model="header">
+		<input type="text" v-model="newItem" placeholder="isi" v-on:keyup.enter="items.push(newItem)">
+		<button class="btn btn-primary" v-on:click="items.push(newItem)"> save item</button>
+		<!-- alternatif pake @
+		<input type="text" v-model="newItem" placeholder="isi" @keyup.enter="items.push(newItem)">
+		<button class="btn btn-primary" @click="items.push(newItem)"> save item</button> -->
+		<ul>
+			<li v-for = "item in items">{{item}}</li>
+		</ul>
+	</div>
+	<script>
+		new Vue({
+			el : '#shopping-list', data:{
+				header:'vue is ready',
+				newItem:'',
+				items :['10 kopi', '30 gula', '50 sandal']
+			}
+		});
+//v-model, v-for, v-on
+
+	</script>
+
+</body>
+</html>
