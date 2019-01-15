@@ -6,27 +6,54 @@
 <body>
 	<script src="https://unpkg.com/vue"></script>
 	<div id="shopping-list">
-		<h1>{{header.toLocaleUpperCase()}}</h1>
-		<input type="text" v-model="header">
-		<input type="text" v-model="newItem" placeholder="isi" v-on:keyup.enter="items.push(newItem)">
-		<button class="btn btn-primary" v-on:click="items.push(newItem)"> save item</button>
-		<!-- alternatif pake @
-		<input type="text" v-model="newItem" placeholder="isi" @keyup.enter="items.push(newItem)">
-		<button class="btn btn-primary" @click="items.push(newItem)"> save item</button> -->
+		<div>
+			<h1>{{header.toLocaleUpperCase()}}</h1>
+			<button v-if = "state === 'default'" @click="changeState('edit')">add item</button>
+			<button v-else @click="changeState('default')">cancel</button>
+		</div>
+		<div v-if="state === 'edit'" class="add-item-form"></div>
+		<input type="text" v-model="header"><br>
+		<input type="text" v-model="newItem" placeholder="isi" v-on:keyup.enter="saveItem">
+		<p>{{characterCount}}/200</p>
+		<button class="btn btn-primary" v-bind:disabled="newItem.lenght === 0" v-on:click="saveItem"> save item</button>
+		<a v-bind:href="newItem" target="_blank">Dynamic link</a>
 		<ul>
 			<li v-for = "item in items">{{item}}</li>
 		</ul>
+		<p v-if = "items.lenght === 0">null item</p>
 	</div>
 	<script>
 		new Vue({
-			el : '#shopping-list', data:{
+			el : '#shopping-list', 
+			data:{
+				state : "default",
 				header:'vue is ready',
 				newItem:'',
-				items :['10 kopi', '30 gula', '50 sandal']
+				items :[ 
+				//'10 kopi', '30 gula', '50 sandal'
+				]
+			}, 
+			computed:{
+				characterCount(){
+					return this.newItem.lenght;
+				}
+
+			},
+			methods:{
+				saveItem: function(){
+					this.items.push(this.newItem);
+					this.newItem = '';	
+				},
+				changeState: function(newState){
+					this.state = newState;
+					this.newItem ='';
+				}
 			}
 		});
-//v-model, v-for, v-on
-
+//v-model, v-for, v-on, v-if
+// <!-- alternatif pake @
+// 		<input type="text" v-model="newItem" placeholder="isi" @keyup.enter="items.push(newItem)">
+// 		<button class="btn btn-primary" @click="items.push(newItem)"> save item</button> -->
 	</script>
 
 </body>
